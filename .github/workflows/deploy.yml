@@ -13,7 +13,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Send Webhook to Aws Lambda
-        run:
-          echo "sending webhook to lambda"
-          curl -X POST -H "Content-Type:application/json" -d "{"repository":"${{github.repository"}},"ref":"{{github.ref","pusher:guthub.actor"] ${{secrets.LAMBDA_URL}}
+      - name: Send Webhook to AWS Lambda
+        run: |
+          echo "Sending webhook to Lambda..."
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"repository\": \"${{ github.repository }}\",
+              \"ref\": \"${{ github.ref }}\",
+              \"pusher\": \"${{ github.actor }}\"
+            }" \
+            ${{ secrets.LAMBDA_URL }}
+
